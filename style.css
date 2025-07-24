@@ -1,0 +1,105 @@
+body {
+  font-family: Arial, sans-serif;
+  background: #f9f9f9;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 600px;
+  margin: auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.tab {
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  border: 1px solid #007bff;
+  background-color: #f0f0f0;
+  color: #007bff;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.tab:hover:not(.active) {
+  background-color: #e6f0ff;
+}
+
+.tab.active {
+  background: #007bff;
+  color: white;
+}
+
+.tab-content {
+  display: none;
+  margin-top: 20px;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid #007bff;
+  background-color: #fdfdfd;
+}
+
+button {
+  margin-top: 15px;
+  padding: 10px;
+  width: 100%;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+button:active:not(:disabled) {
+  background-color: #1e7e34;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+#task-list {
+  list-style: none;
+  padding: 0;
+}
+
+#task-list li {
+  background: #f1f1f1;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+}
