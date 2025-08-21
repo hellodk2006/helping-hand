@@ -1,15 +1,29 @@
+/* Vibrant animated background */
 body {
   font-family: Arial, sans-serif;
-  background: #f9f9f9;
-  padding: 2rem;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff6ec4, #7873f5, #4ce0b3, #ffe53b, #ff2525);
+  background-size: 600% 600%;
+  animation: gradientAnimation 20s ease infinite;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .container {
   max-width: 600px;
-  margin: auto;
   background: white;
   padding: 2rem;
-  border-radius: 8px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
 .tab {
@@ -81,8 +95,6 @@ button {
   padding: 10px;
   width: auto;
   max-width: 200px;
-  margin-left: auto;
-  margin-right: auto;
   background-color: #28a745;
   color: white;
   border: none;
@@ -94,10 +106,6 @@ button {
 
 button:hover:not(:disabled) {
   background-color: #218838;
-}
-
-button:active:not(:disabled) {
-  background-color: #1e7e34;
 }
 
 button:disabled {
@@ -113,72 +121,7 @@ button:disabled {
   border: 1px solid #f5c6cb;
   margin-top: 20px;
   font-weight: bold;
-  font-size: 1.1rem;
-}
-
-#otp {
-  width: 60%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  display: inline-block;
-}
-
-#verify-otp-btn {
-  width: 30%;
-  padding: 8px;
-  margin-top: 4px;
-  border: 1px solid #28a745;
-  border-radius: 4px;
-  background-color: #28a745;
-  color: white;
   font-size: 1rem;
-  cursor: pointer;
 }
 
-#verify-otp-btn:hover {
-  background-color: #218838;
-}
-
-#verify-otp-btn:active {
-  background-color: #1e7e34;
-}
-
-#verify-otp-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-}
-
-#task-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 20px;
-}
-
-#task-list li {
-  background: #f1f1f1;
-  padding: 10px;
-  margin-bottom: 10px;
-  border-left: 4px solid #007bff;
-  border-radius: 4px;
-}
-
-#task-list li.pending {
-  border-left: 4px solid #f0ad4e;  /* Yellow for pending */
-}
-
-#task-list li.assigned {
-  border-left: 4px solid #5bc0de;  /* Blue for assigned */
-}
-
-#task-list li.completed {
-  border-left: 4px solid #28a745;  /* Green for completed */
-}
-
-#task-list li:hover {
-  background-color: #e6f0ff;
-  cursor: pointer;
-  transform: scale(1.02); /* Slightly enlarge when hovered */
-  transition: transform 0.2s ease-in-out;
-}
+#task-li
