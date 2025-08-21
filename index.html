@@ -1,58 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MyFlatCart: SocioCart</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <h1>MyFlatCart: SocioCart</h1>
-    <div id="tabs">
+    <div>
       <button id="register-tab" class="tab active">Register</button>
       <button id="tasks-tab" class="tab" disabled>Tasks</button>
     </div>
 
+    <!-- Register Form -->
     <div id="register-form" class="tab-content active">
-      <h2>User Registration</h2>
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your full name" />
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" />
-
-      <label for="phone">Phone</label>
-      <input type="tel" id="phone" name="phone" placeholder="Enter your phone number" />
-
-      <label for="aadhar">Aadhar</label>
-      <input type="text" id="aadhar" name="aadhar" maxlength="12" placeholder="Enter your 12-digit Aadhar number" />
-
-      <p id="error" class="error"></p>
-      <button id="register-btn">Register & Verify</button>
+      <h2>Register</h2>
+      <label>Name: <input type="text" id="name"></label>
+      <label>Email: <input type="email" id="email"></label>
+      <label>Phone: <input type="text" id="phone"></label>
+      <label>Aadhar: <input type="text" id="aadhar"></label>
+      <button id="register-btn">Register</button>
+      <div id="error" class="error"></div>
     </div>
 
+    <!-- Task Section -->
     <div id="task-section" class="tab-content">
-      <h2>Welcome, <span id="user-name"></span>!</h2>
+      <h2>Welcome, <span id="user-name"></span></h2>
+      <h3>Post a Task</h3>
+      <label>Title: <input type="text" id="task-title"></label>
+      <label>Description: <input type="text" id="task-desc"></label>
+      <label>Amount: <input type="number" id="task-amount"></label>
+      <button id="post-task-btn">Post Task</button>
 
-      <div class="task-post">
-        <h3>Post a Task</h3>
-        <label for="task-title">Title</label>
-        <input type="text" id="task-title" placeholder="Task title" />
-
-        <label for="task-desc">Description</label>
-        <input type="text" id="task-desc" placeholder="Task description" />
-
-        <label for="task-amount">Amount ₹</label>
-        <input type="number" id="task-amount" placeholder="Task amount" />
-
-        <button id="post-task-btn">Post Task</button>
-      </div>
-
-      <div>
-        <h3>Available Tasks</h3>
-        <ul id="task-list"></ul>
-      </div>
+      <h3>Available Tasks</h3>
+      <ul id="task-list"></ul>
     </div>
   </div>
 
