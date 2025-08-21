@@ -9,34 +9,33 @@
 <body>
   <div class="container">
     <h1>MyFlatCart: SocioCart</h1>
+
+    <!-- Tab Navigation -->
     <div id="tabs">
       <button id="register-tab" class="tab active">Register</button>
       <button id="tasks-tab" class="tab" disabled>Tasks</button>
     </div>
 
-    <!-- Register Form -->
+    <!-- Registration Form -->
     <div id="register-form" class="tab-content active">
       <h2>User Registration</h2>
-      
+
       <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter your full name" />
+      <input type="text" id="name" placeholder="Enter your full name" />
 
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" placeholder="Enter your email" />
+      <input type="email" id="email" placeholder="Enter your email" />
 
       <label for="phone">Phone</label>
       <div class="phone-container">
-        <!-- Country Code Dropdown -->
-        <select id="country-code" name="country-code">
+        <select id="country-code">
           <option value="+91" selected>+91 (India)</option>
-          <!-- Add more countries if needed -->
         </select>
-        <!-- Phone Number Input -->
-        <input type="tel" id="phone" name="phone" maxlength="10" placeholder="Enter your phone number" />
+        <input type="tel" id="phone" maxlength="10" placeholder="Enter your phone number" />
       </div>
 
       <label for="aadhar">Aadhar</label>
-      <input type="text" id="aadhar" name="aadhar" maxlength="12" placeholder="Enter your 12-digit Aadhar number" />
+      <input type="text" id="aadhar" maxlength="12" placeholder="Enter your 12-digit Aadhar number" />
 
       <p id="error" class="error"></p>
       <button id="register-btn">Register & Verify</button>
@@ -46,10 +45,10 @@
     <div id="task-section" class="tab-content">
       <h2>Welcome, <span id="user-name"></span>!</h2>
 
-      <!-- Post a Task -->
+      <!-- Task Form -->
       <div class="task-post">
         <h3>Post a Task</h3>
-        
+
         <label for="task-title">Title</label>
         <input type="text" id="task-title" placeholder="Task title" />
 
@@ -62,7 +61,7 @@
         <button id="post-task-btn">Post Task</button>
       </div>
 
-      <!-- Task List -->
+      <!-- Tasks List -->
       <div>
         <h3>Available Tasks</h3>
         <ul id="task-list"></ul>
