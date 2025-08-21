@@ -1,6 +1,8 @@
 let currentUser = null;
-let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // Retrieve tasks from local storage if they exist
+let generatedOTP = null; // Variable to store generated OTP
 
+// Initialize the task list from local storage
 renderTasks();
 
 const nameEl = document.getElementById("name");
@@ -14,160 +16,129 @@ const userNameEl = document.getElementById("user-name");
 const registerTab = document.getElementById("register-tab");
 const tasksTab = document.getElementById("tasks-tab");
 const registerForm = document.getElementById("register-form");
-const taskSection = document.getElementById("task-section");
+const taskOptions = document.getElementById("task-options");
+const taskPostForm = document.getElementById("task-post-form");
+const taskListSection = document.getElementById("task-list-section");
 
-const switchTab = (tab) => {
-  document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
-  document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
+const postTaskOption = document.getElementById("post-task-option");
+const takeTaskOption = document.getElementById("take-task-option");
 
-  if (tab === "register") {
-    registerTab.classList.add("active");
-    registerForm.classList.add("active");
-  } else {
-    tasksTab.classList.add("active");
-    taskSection.classList.add("active");
+const phoneOtpInput = document.createElement("input");
+phoneOtpInput.setAttribute("type", "text");
+phoneOtpInput.setAttribute("id", "otp");
+phoneOtpInput.setAttribute("placeholder", "Enter OTP");
+
+const otpButton = document.createElement("button");
+otpButton.innerText = "Verify OTP";
+otpButton.setAttribute("id", "verify-otp-btn");
+
+document.getElementById("register-btn").addEventListener("click", () => {
+  if (!nameEl.value || !emailEl.value || !phoneEl.value || !aadharEl.value) {
+    errorEl.innerText = "All fields are required!";
+    return;
   }
-};
+  
+  // Proceed with OTP generation
+  generatedOTP = Math.floor(100000 + Math.random() * 900000); // Generate random 6-digit OTP
+  console.log("Generated OTP:", generatedOTP); // For testing purposes
+  
+  // Show OTP input and button
+  registerForm.appendChild(phoneOtpInput);
+  registerForm.appendChild(otpButton);
+  
+  errorEl.innerText = ""; // Clear previous error
 
-registerTab.addEventListener("click", () => switchTab("register"));
-tasksTab.addEventListener("click", () => switchTab("tasks"));
+  // Add OTP verification event listener
+  otpButton.addEventListener("click", () => {
+    const enteredOTP = document.getElementById("otp").value;
+    
+    if (enteredOTP === String(generatedOTP)) {
+      // OTP is valid, proceed with registration
+      currentUser = {
+        name: nameEl.value,
+        email: emailEl.value,
+        phone: ${countryCodeEl.value}${phoneEl.value},
+        aadhar: aadharEl.value,
+      };
 
-function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
+      // Hide OTP input and button
+      phoneOtpInput.style.display = "none";
+      otpButton.style.display = "none";
 
-function isValidAadhar(aadhar) {
-  return /^\d{12}$/.test(aadhar);
-}
+      registerForm.classList.remove("active");
+      taskOptions.classList.add("active");
+      userNameEl.innerText = currentUser.name;
 
-function isValidPhone(phone) {
-  return /^\d{10}$/.test(phone);
-}
-
-function simulateOTPVerification() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(true); // Always passes for now
-    }, 1000);
+      // Enable tasks tab
+      tasksTab.disabled = false;
+      tasksTab.classList.remove("disabled");
+    } else {
+      errorEl.innerText = "Invalid OTP. Please try again.";
+    }
   });
-}
-
-document.getElementById("register-btn").addEventListener("click", async () => {
-  const name = nameEl.value.trim();
-  const email = emailEl.value.trim();
-  const phone = phoneEl.value.trim();
-  const countryCode = countryCodeEl.value.trim();
-  const aadhar = aadharEl.value.trim();
-
-  if (!name || !email || !phone || !aadhar) {
-    errorEl.textContent = "All fields (Name, Email, Phone, Aadhar) are required.";
-    return;
-  }
-
-  if (!isValidEmail(email)) {
-    errorEl.textContent = "Invalid email address.";
-    return;
-  }
-
-  if (!isValidPhone(phone)) {
-    errorEl.textContent = "Phone number must be 10 digits.";
-    return;
-  }
-
-  if (!isValidAadhar(aadhar)) {
-    errorEl.textContent = "Aadhar must be 12 digits.";
-    return;
-  }
-
-  errorEl.textContent = "Sending OTP...";
-
-  const otpVerified = await simulateOTPVerification();
-
-  if (!otpVerified) {
-    errorEl.textContent = "OTP verification failed.";
-    return;
-  }
-
-  errorEl.textContent = "Verification successful!";
-
-  currentUser = {
-    id: `user-${Date.now()}`,
-    name,
-    email,
-    phone: `${countryCode} ${phone}`,
-    aadhar
-  };
-
-  userNameEl.textContent = name;
-  tasksTab.removeAttribute("disabled");
-
-  nameEl.value = "";
-  emailEl.value = "";
-  phoneEl.value = "";
-  aadharEl.value = "";
-
-  switchTab("tasks");
 });
 
+postTaskOption.addEventListener("click", () => {
+  taskPostForm.classList.add("active");
+  taskListSection.classList.remove("active");
+});
+
+takeTaskOption.addEventListener("click", () => {
+  taskPostForm.classList.remove("active");
+  taskListSection.classList.add("active");
+});
+
+// Handle Task Post Form
 document.getElementById("post-task-btn").addEventListener("click", () => {
-  const title = document.getElementById("task-title").value.trim();
-  const description = document.getElementById("task-desc").value.trim();
-  const amount = Number(document.getElementById("task-amount").value);
+  const taskCategory = document.getElementById("task-category").value;
+  const taskTitle = document.getElementById("task-title").value;
+  const taskDesc = document.getElementById("task-desc").value;
+  const taskAmount = document.getElementById("task-amount").value;
 
-  if (!title || !description || isNaN(amount) || amount <= 0) {
-    alert("Please fill in all task fields correctly.");
-    return;
-  }
-
-  if (!currentUser) {
-    alert("You must be registered to post tasks.");
+  if (!taskTitle || !taskDesc || !taskAmount) {
+    errorEl.innerText = "All task fields are required!";
     return;
   }
 
   const task = {
-    id: `task-${Date.now()}`,
-    title,
-    description,
-    amount,
-    status: "pending",
-    postedBy: currentUser.id
+    id: Date.now(),
+    category: taskCategory,
+    title: taskTitle,
+    description: taskDesc,
+    amount: taskAmount,
+    postedBy: currentUser.name,
+    status: "Available" // Set task status
   };
 
   tasks.push(task);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  renderTasks();
-
-  document.getElementById("task-title").value = "";
-  document.getElementById("task-desc").value = "";
-  document.getElementById("task-amount").value = "";
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // Save tasks to localStorage
+  
+  renderTasks(); // Refresh task list
+  taskPostForm.classList.remove("active");
+  taskListSection.classList.add("active");
 });
 
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
-
-  const pendingTasks = tasks.filter(t => t.status === "pending");
-
-  if (pendingTasks.length === 0) {
-    taskList.innerHTML = "<li>No pending tasks.</li>";
-    return;
-  }
-
-  pendingTasks.forEach(task => {
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>${task.title}</strong> - ₹${task.amount}<br/>
-      <em>${task.description}</em><br/>
-      <button onclick="acceptTask('${task.id}')">Accept</button>
+  tasks.forEach((task) => {
+    const taskItem = document.createElement("li");
+    taskItem.innerHTML = `
+      <strong>${task.title}</strong><br />
+      Category: ${task.category}<br />
+      Description: ${task.description}<br />
+      Amount: ₹${task.amount}<br />
+      Posted by: ${task.postedBy}<br />
+      Status: <span style="color:${task.status === 'Available' ? 'green' : 'gray'}">${task.status}</span><br />
+      <button onclick="acceptTask(${task.id})" ${task.status === 'Accepted' ? 'disabled' : ''}>Accept Task</button>
     `;
-    taskList.appendChild(li);
+    taskList.appendChild(taskItem);
   });
 }
 
-window.acceptTask = function (taskId) {
-  tasks = tasks.map(task =>
-    task.id === taskId ? { ...task, status: "assigned", assignedTo: currentUser.id } : task
-  );
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  renderTasks();
-};
+function acceptTask(taskId) {
+  const task = tasks.find((task) => task.id === taskId);
+  task.status = "Accepted"; // Change task status to Accepted
+  renderTasks(); // Re-render the task list to reflect the change
+  alert(You have accepted the task: ${task.title});
+}
