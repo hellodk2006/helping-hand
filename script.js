@@ -29,8 +29,13 @@ const switchTab = (tab) => {
 registerTab.addEventListener("click", () => switchTab("register"));
 tasksTab.addEventListener("click", () => switchTab("tasks"));
 
+// Validation Functions
 function isValidEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
+}
+
+function isValidPhone(phone) {
+  return /^\d{10}$/.test(phone); // exactly 10 digits
 }
 
 function isValidAadhar(aadhar) {
@@ -56,8 +61,13 @@ document.getElementById("register-btn").addEventListener("click", async () => {
     return;
   }
 
+  if (!isValidPhone(phone)) {
+    errorEl.textContent = "Phone number must be exactly 10 digits";
+    return;
+  }
+
   if (!isValidEmail(email)) {
-    errorEl.textContent = "Invalid email";
+    errorEl.textContent = "Email must be a valid @gmail.com address";
     return;
   }
 
@@ -77,7 +87,7 @@ document.getElementById("register-btn").addEventListener("click", async () => {
   }
 
   errorEl.textContent = "";
-  currentUser = { id: user-${Date.now()}, name, email, phone, aadhar };
+  currentUser = { id: `user-${Date.now()}`, name, email, phone, aadhar };
   userNameEl.textContent = name;
   tasksTab.disabled = false;
 
@@ -106,7 +116,7 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   }
 
   const task = {
-    id: task-${Date.now()},
+    id: `task-${Date.now()}`,
     title,
     description,
     amount,
@@ -150,4 +160,5 @@ window.acceptTask = function (taskId) {
     task.id === taskId ? { ...task, status: "assigned", assignedTo: currentUser.id } : task
   );
   renderTasks();
-);
+};
+
