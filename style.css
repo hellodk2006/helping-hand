@@ -1,17 +1,15 @@
 body {
   font-family: Arial, sans-serif;
-  background: #000; /* Black background */
-  color: #fff;      /* White text */
+  background: #f9f9f9;
   padding: 2rem;
 }
 
 .container {
   max-width: 600px;
   margin: auto;
-  background: #1a1a1a; /* Dark gray container */
+  background: white;
   padding: 2rem;
   border-radius: 8px;
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .tab {
@@ -19,14 +17,14 @@ body {
   margin-right: 10px;
   cursor: pointer;
   border: 1px solid #007bff;
-  background-color: #333;
+  background-color: #f0f0f0;
   color: #007bff;
   border-radius: 4px;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease;
 }
 
 .tab:hover:not(.active) {
-  background-color: #222;
+  background-color: #e6f0ff;
 }
 
 .tab.active {
@@ -48,26 +46,43 @@ label {
   margin-top: 10px;
 }
 
-input {
+input, select {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
-  border: 1px solid #555;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  background: #222;
-  color: #fff;
 }
 
-input:focus {
+input:focus, select:focus {
   outline: none;
   border: 2px solid #007bff;
-  background-color: #111;
+  background-color: #f7f7f7;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.phone-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.phone-container select {
+  width: 30%;
+}
+
+.phone-container input {
+  width: 65%;
 }
 
 button {
-  margin-top: 15px;
+  margin-top: 20px;
   padding: 10px;
-  width: 100%;
+  width: auto;
+  max-width: 200px;
+  margin-left: auto;
+  margin-right: auto;
   background-color: #28a745;
   color: white;
   border: none;
@@ -86,25 +101,84 @@ button:active:not(:disabled) {
 }
 
 button:disabled {
-  background-color: #555;
+  background-color: #ccc;
   cursor: not-allowed;
 }
 
 .error {
-  color: red;
-  margin-top: 10px;
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 15px;
+  border-radius: 5px;
+  border: 1px solid #f5c6cb;
+  margin-top: 20px;
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+#otp {
+  width: 60%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+#verify-otp-btn {
+  width: 30%;
+  padding: 8px;
+  margin-top: 4px;
+  border: 1px solid #28a745;
+  border-radius: 4px;
+  background-color: #28a745;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+#verify-otp-btn:hover {
+  background-color: #218838;
+}
+
+#verify-otp-btn:active {
+  background-color: #1e7e34;
+}
+
+#verify-otp-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 #task-list {
   list-style: none;
   padding: 0;
+  margin-top: 20px;
 }
 
 #task-list li {
-  background: #222;
+  background: #f1f1f1;
   padding: 10px;
   margin-bottom: 10px;
   border-left: 4px solid #007bff;
   border-radius: 4px;
-  color: #ddd;
+}
+
+#task-list li.pending {
+  border-left: 4px solid #f0ad4e;  /* Yellow for pending */
+}
+
+#task-list li.assigned {
+  border-left: 4px solid #5bc0de;  /* Blue for assigned */
+}
+
+#task-list li.completed {
+  border-left: 4px solid #28a745;  /* Green for completed */
+}
+
+#task-list li:hover {
+  background-color: #e6f0ff;
+  cursor: pointer;
+  transform: scale(1.02); /* Slightly enlarge when hovered */
+  transition: transform 0.2s ease-in-out;
 }
