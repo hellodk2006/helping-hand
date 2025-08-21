@@ -103,7 +103,7 @@ document.getElementById("register-btn").addEventListener("click", async () => {
   errorEl.textContent = "Verification successful!";
   currentUser = { id: user-${Date.now()}, name, email, phone: ${countryCode} ${phone}, aadhar };
   userNameEl.textContent = name;
-  tasksTab.disabled = false;
+  tasksTab.classList.remove("disabled");  // Un-hide or enable Tasks Tab
 
   // Clear registration form
   nameEl.value = "";
@@ -163,11 +163,11 @@ function renderTasks() {
 
   pendingTasks.forEach(task => {
     const li = document.createElement("li");
-    li.innerHTML = 
+    li.innerHTML = `
       <strong>${task.title}</strong> - ₹${task.amount}<br/>
       <em>${task.description}</em><br/>
       <button onclick="acceptTask('${task.id}')">Accept</button>
-    ;
+    `;
     taskList.appendChild(li);
   });
 }
@@ -178,4 +178,4 @@ window.acceptTask = function (taskId) {
   );
   localStorage.setItem("tasks", JSON.stringify(tasks)); // Update the tasks in local storage
   renderTasks();
-};
+}
