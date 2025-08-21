@@ -1,7 +1,6 @@
 let currentUser = null;
-let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // Retrieve tasks from local storage if they exist
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-// Initialize the task list from local storage
 renderTasks();
 
 const nameEl = document.getElementById("name");
@@ -17,16 +16,6 @@ const tasksTab = document.getElementById("tasks-tab");
 const registerForm = document.getElementById("register-form");
 const taskSection = document.getElementById("task-section");
 
-const phoneOtpInput = document.createElement("input");
-phoneOtpInput.setAttribute("type", "text");
-phoneOtpInput.setAttribute("id", "otp");
-phoneOtpInput.setAttribute("placeholder", "Enter OTP");
-
-const otpButton = document.createElement("button");
-otpButton.textContent = "Verify OTP";
-otpButton.setAttribute("id", "verify-otp-btn");
-
-// Switch tabs between registration and tasks
 const switchTab = (tab) => {
   document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
@@ -58,7 +47,7 @@ function isValidPhone(phone) {
 function simulateOTPVerification() {
   return new Promise(resolve => {
     setTimeout(() => {
-      resolve(Math.random() < 0.9);  // 90% chance to verify
+      resolve(true); // Always passes for now
     }, 1000);
   });
 }
@@ -71,47 +60,52 @@ document.getElementById("register-btn").addEventListener("click", async () => {
   const aadhar = aadharEl.value.trim();
 
   if (!name || !email || !phone || !aadhar) {
-    errorEl.textContent = "All fields are required";
+    errorEl.textContent = "All fields (Name, Email, Phone, Aadhar) are required.";
     return;
   }
 
   if (!isValidEmail(email)) {
-    errorEl.textContent = "Invalid email";
-    return;
-  }
-
-  if (!isValidAadhar(aadhar)) {
-    errorEl.textContent = "Aadhar must be 12 digits";
+    errorEl.textContent = "Invalid email address.";
     return;
   }
 
   if (!isValidPhone(phone)) {
-    errorEl.textContent = "Phone number must be 10 digits";
+    errorEl.textContent = "Phone number must be 10 digits.";
+    return;
+  }
+
+  if (!isValidAadhar(aadhar)) {
+    errorEl.textContent = "Aadhar must be 12 digits.";
     return;
   }
 
   errorEl.textContent = "Sending OTP...";
 
-  // Simulate OTP verification
   const otpVerified = await simulateOTPVerification();
 
   if (!otpVerified) {
-    errorEl.textContent = "OTP verification failed. Try again.";
+    errorEl.textContent = "OTP verification failed.";
     return;
   }
 
   errorEl.textContent = "Verification successful!";
-  currentUser = { id: user-${Date.now()}, name, email, phone: ${countryCode} ${phone}, aadhar };
-  userNameEl.textContent = name;
-  tasksTab.classList.remove("disabled");  // Un-hide or enable Tasks Tab
 
-  // Clear registration form
+  currentUser = {
+    id: `user-${Date.now()}`,
+    name,
+    email,
+    phone: `${countryCode} ${phone}`,
+    aadhar
+  };
+
+  userNameEl.textContent = name;
+  tasksTab.removeAttribute("disabled");
+
   nameEl.value = "";
   emailEl.value = "";
   phoneEl.value = "";
   aadharEl.value = "";
 
-  // Switch to tasks tab
   switchTab("tasks");
 });
 
@@ -131,7 +125,7 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   }
 
   const task = {
-    id: task-${Date.now()},
+    id: `task-${Date.now()}`,
     title,
     description,
     amount,
@@ -140,16 +134,14 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   };
 
   tasks.push(task);
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // Store the tasks in local storage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
   renderTasks();
 
-  // Clear task form
   document.getElementById("task-title").value = "";
   document.getElementById("task-desc").value = "";
   document.getElementById("task-amount").value = "";
 });
 
-// Render tasks from localStorage
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
@@ -173,9 +165,9 @@ function renderTasks() {
 }
 
 window.acceptTask = function (taskId) {
-  tasks = tasks.map(task => 
+  tasks = tasks.map(task =>
     task.id === taskId ? { ...task, status: "assigned", assignedTo: currentUser.id } : task
   );
-  localStorage.setItem("tasks", JSON.stringify(tasks)); // Update the tasks in local storage
+  localStorage.setItem("tasks", JSON.stringify(tasks));
   renderTasks();
-}
+};
