@@ -1,4 +1,4 @@
-et currentUser = null;
+let currentUser = null;
 let tasks = [];
 
 const nameEl = document.getElementById("name");
