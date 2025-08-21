@@ -1,15 +1,17 @@
 body {
   font-family: Arial, sans-serif;
-  background: #f9f9f9;
+  background: #000; /* Black background */
+  color: #fff;      /* White text */
   padding: 2rem;
 }
 
 .container {
   max-width: 600px;
   margin: auto;
-  background: white;
+  background: #1a1a1a; /* Dark gray container */
   padding: 2rem;
   border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
 }
 
 .tab {
@@ -17,14 +19,14 @@ body {
   margin-right: 10px;
   cursor: pointer;
   border: 1px solid #007bff;
-  background-color: #f0f0f0;
+  background-color: #333;
   color: #007bff;
   border-radius: 4px;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .tab:hover:not(.active) {
-  background-color: #e6f0ff;
+  background-color: #222;
 }
 
 .tab.active {
@@ -50,14 +52,16 @@ input {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
-  border: 1px solid #ccc;
+  border: 1px solid #555;
   border-radius: 4px;
+  background: #222;
+  color: #fff;
 }
 
 input:focus {
   outline: none;
   border: 2px solid #007bff;
-  background-color: #fdfdfd;
+  background-color: #111;
 }
 
 button {
@@ -82,7 +86,7 @@ button:active:not(:disabled) {
 }
 
 button:disabled {
-  background-color: #ccc;
+  background-color: #555;
   cursor: not-allowed;
 }
 
@@ -97,9 +101,10 @@ button:disabled {
 }
 
 #task-list li {
-  background: #f1f1f1;
+  background: #222;
   padding: 10px;
   margin-bottom: 10px;
   border-left: 4px solid #007bff;
   border-radius: 4px;
+  color: #ddd;
 }
