@@ -1,9 +1,13 @@
 let currentUser = null;
-let tasks = [];
+let tasks = JSON.parse(localStorage.getItem("tasks")) || []; // Retrieve tasks from local storage if they exist
+
+// Initialize the task list from local storage
+renderTasks();
 
 const nameEl = document.getElementById("name");
 const emailEl = document.getElementById("email");
 const phoneEl = document.getElementById("phone");
+const countryCodeEl = document.getElementById("country-code");
 const aadharEl = document.getElementById("aadhar");
 const errorEl = document.getElementById("error");
 const userNameEl = document.getElementById("user-name");
@@ -13,6 +17,16 @@ const tasksTab = document.getElementById("tasks-tab");
 const registerForm = document.getElementById("register-form");
 const taskSection = document.getElementById("task-section");
 
+const phoneOtpInput = document.createElement("input");
+phoneOtpInput.setAttribute("type", "text");
+phoneOtpInput.setAttribute("id", "otp");
+phoneOtpInput.setAttribute("placeholder", "Enter OTP");
+
+const otpButton = document.createElement("button");
+otpButton.textContent = "Verify OTP";
+otpButton.setAttribute("id", "verify-otp-btn");
+
+// Switch tabs between registration and tasks
 const switchTab = (tab) => {
   document.querySelectorAll(".tab").forEach(btn => btn.classList.remove("active"));
   document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
@@ -29,20 +43,19 @@ const switchTab = (tab) => {
 registerTab.addEventListener("click", () => switchTab("register"));
 tasksTab.addEventListener("click", () => switchTab("tasks"));
 
-// Validation Functions
 function isValidEmail(email) {
-  return /^[a-zA-Z0-9._%+-]+@gmail\.com$/.test(email);
-}
-
-function isValidPhone(phone) {
-  return /^\d{10}$/.test(phone); // exactly 10 digits
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
 function isValidAadhar(aadhar) {
   return /^\d{12}$/.test(aadhar);
 }
 
-function simulateVerification() {
+function isValidPhone(phone) {
+  return /^\d{10}$/.test(phone);
+}
+
+function simulateOTPVerification() {
   return new Promise(resolve => {
     setTimeout(() => {
       resolve(Math.random() < 0.9);  // 90% chance to verify
@@ -54,6 +67,7 @@ document.getElementById("register-btn").addEventListener("click", async () => {
   const name = nameEl.value.trim();
   const email = emailEl.value.trim();
   const phone = phoneEl.value.trim();
+  const countryCode = countryCodeEl.value.trim();
   const aadhar = aadharEl.value.trim();
 
   if (!name || !email || !phone || !aadhar) {
@@ -61,13 +75,8 @@ document.getElementById("register-btn").addEventListener("click", async () => {
     return;
   }
 
-  if (!isValidPhone(phone)) {
-    errorEl.textContent = "Phone number must be exactly 10 digits";
-    return;
-  }
-
   if (!isValidEmail(email)) {
-    errorEl.textContent = "Email must be a valid @gmail.com address";
+    errorEl.textContent = "Invalid email";
     return;
   }
 
@@ -76,18 +85,23 @@ document.getElementById("register-btn").addEventListener("click", async () => {
     return;
   }
 
-  errorEl.textContent = "Verifying...";
-  document.getElementById("register-btn").disabled = true;
-  const verified = await simulateVerification();
-  document.getElementById("register-btn").disabled = false;
-
-  if (!verified) {
-    errorEl.textContent = "Aadhar verification failed. Try again.";
+  if (!isValidPhone(phone)) {
+    errorEl.textContent = "Phone number must be 10 digits";
     return;
   }
 
-  errorEl.textContent = "";
-  currentUser = { id: `user-${Date.now()}`, name, email, phone, aadhar };
+  errorEl.textContent = "Sending OTP...";
+
+  // Simulate OTP verification
+  const otpVerified = await simulateOTPVerification();
+
+  if (!otpVerified) {
+    errorEl.textContent = "OTP verification failed. Try again.";
+    return;
+  }
+
+  errorEl.textContent = "Verification successful!";
+  currentUser = { id: user-${Date.now()}, name, email, phone: ${countryCode} ${phone}, aadhar };
   userNameEl.textContent = name;
   tasksTab.disabled = false;
 
@@ -97,6 +111,7 @@ document.getElementById("register-btn").addEventListener("click", async () => {
   phoneEl.value = "";
   aadharEl.value = "";
 
+  // Switch to tasks tab
   switchTab("tasks");
 });
 
@@ -116,7 +131,7 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   }
 
   const task = {
-    id: `task-${Date.now()}`,
+    id: task-${Date.now()},
     title,
     description,
     amount,
@@ -125,6 +140,7 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   };
 
   tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // Store the tasks in local storage
   renderTasks();
 
   // Clear task form
@@ -133,6 +149,7 @@ document.getElementById("post-task-btn").addEventListener("click", () => {
   document.getElementById("task-amount").value = "";
 });
 
+// Render tasks from localStorage
 function renderTasks() {
   const taskList = document.getElementById("task-list");
   taskList.innerHTML = "";
@@ -146,11 +163,11 @@ function renderTasks() {
 
   pendingTasks.forEach(task => {
     const li = document.createElement("li");
-    li.innerHTML = `
+    li.innerHTML = 
       <strong>${task.title}</strong> - ₹${task.amount}<br/>
       <em>${task.description}</em><br/>
       <button onclick="acceptTask('${task.id}')">Accept</button>
-    `;
+    ;
     taskList.appendChild(li);
   });
 }
@@ -159,6 +176,6 @@ window.acceptTask = function (taskId) {
   tasks = tasks.map(task => 
     task.id === taskId ? { ...task, status: "assigned", assignedTo: currentUser.id } : task
   );
+  localStorage.setItem("tasks", JSON.stringify(tasks)); // Update the tasks in local storage
   renderTasks();
 };
-
